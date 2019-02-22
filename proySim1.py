@@ -58,6 +58,9 @@ class SimUL:
     
     stateDict = {}
     transTable = {}
+    PopRes = []
+    IngRes = []
+    InactRes = [] 
      
     
     def __init__(self, decTable, initPG1, initPG2, numStages, numSim):
@@ -175,11 +178,7 @@ class SimUL:
         return (PG1, PG2, inact)       
      
          
-    def simulate(self):
-        
-        PopRes = []
-        IngRes = []
-        InactRes = []               
+    def simulate(self):                    
         
         self.createStateDict()
         self.asgnTrMat()     
@@ -207,15 +206,29 @@ class SimUL:
                 currIng.append(b)
                 currInact.append(c)
             
-            PopRes.append(currPop)
-            IngRes.append(currIng) 
-            InactRes.append(currInact)        
+            self.PopRes.append(currPop)
+            self.IngRes.append(currIng) 
+            self.InactRes.append(currInact)        
                 
-        return(PopRes, IngRes, InactRes)    #PopRes dimension nsimul * nstages + 1 * n * m
+        return(self.PopRes, self.IngRes, self.InactRes)    #PopRes dimension nsimul * nstages + 1 * n * m
         
     
-    def plot(self):
-        return
+    def plot(self, nsim):
+        fig = plt.figure( 1 )
+        ax = fig.add_subplot( 111 )
+
+        im, cbar = heatmap(self.PopRes[nsim - 1][0].values, self.PopRes[nsim - 1][0].index,  \
+                           self.PopRes[nsim - 1][0].columns, ax=ax, title="Pob Inicial", cmap="RdYlGn_r")
+        texts = annotate_heatmap(im, valfmt="{x}")
+
+        fig.show()
+        im.axes.figure.canvas.draw()
+
+        for i in range(len(self.PopRes[nsim - 1])-1):
+            ax.set_title( str( i + 1) )
+            im.set_data( self.PopRes[nsim - 1][i+1].values )
+            im.axes.figure.canvas.draw()
+            plt.pause(0.5)
         
                 
                 
@@ -240,23 +253,9 @@ decTable = decTable.set_index('Edad')
 nsim = SimUL(decTable, initPG1, initPG2, 20, 1)
 a,b,c = nsim.simulate()
 
+nsim.plot(1)
 
-fig = plt.figure( 1 )
-ax = fig.add_subplot( 111 )
-
-im, cbar = heatmap(a[0][0].values, a[0][0].index,  a[0][0].columns, ax=ax, title="Pob Inicial",
-                   cmap="RdYlGn_r")
-texts = annotate_heatmap(im, valfmt="{x}")
-
-fig.show()
-im.axes.figure.canvas.draw()
-
-for i in range( 20 ):
-    ax.set_title( str( i + 1) )
-    im.set_data( a[0][i+1].values )
-    im.axes.figure.canvas.draw()
-    plt.pause(0.5)
-  
+len(a[0])  
 
 
 
