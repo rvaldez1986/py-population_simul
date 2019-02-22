@@ -8,7 +8,6 @@ import os
 os.chdir('C:/Users/rober/Desktop/act-remote/proyecto-sim')
 from hmap import heatmap, annotate_heatmap
 import matplotlib.pyplot as plt
-import matplotlib
 import numpy as np
 import pandas as pd
 
