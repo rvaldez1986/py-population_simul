@@ -4,7 +4,11 @@ Created on Tue Feb 19 12:49:32 2019
 
 @author: rober
 """
-
+import os
+os.chdir('C:/Users/rober/Desktop/act-remote/proyecto-sim')
+from hmap import heatmap, annotate_heatmap
+import matplotlib.pyplot as plt
+import matplotlib
 import numpy as np
 import pandas as pd
 
@@ -55,6 +59,7 @@ class SimUL:
     
     stateDict = {}
     transTable = {}
+     
     
     def __init__(self, decTable, initPG1, initPG2, numStages, numSim):
         self.decTable = decTable
@@ -168,17 +173,14 @@ class SimUL:
         PG1.index = self.initPG1.index
         PG2.index = self.initPG2.index
         
-        return (PG1, PG2, inact)      
-    
-     #def plot(self):
+        return (PG1, PG2, inact)       
      
          
     def simulate(self):
         
-        
         PopRes = []
         IngRes = []
-        InactRes = []        
+        InactRes = []               
         
         self.createStateDict()
         self.asgnTrMat()     
@@ -193,13 +195,12 @@ class SimUL:
             
             for j in range(self.numStages):                
                                
-                #self.plot()
-                
-                #self.compute()
+                                
+                #self.compute()  #we compute first, then transition
                 
                 self.send()                                   
                 self.receive()
-                self.zeroTransTab()
+                self.zeroTransTab()  #all transitioned we need to zero the transitionTable
                 
                 a, b, c = self.constPopMat()                
                 
@@ -212,35 +213,65 @@ class SimUL:
             InactRes.append(currInact)        
                 
         return(PopRes, IngRes, InactRes)    #PopRes dimension nsimul * nstages + 1 * n * m
+        
+    
+    def plot(self):
+        return
+        
                 
                 
         
    
-#data = [[25,3,2,8],[26,15,14,13],['27+',21,19,18]]
-data = [[25,0,0,0],[26,0,0,0],['27+',0,0,0]]        
+data = [[25,3,2,8],[26,15,14,13],['27+',21,19,18]]
+#data = [[25,0,0,0],[26,0,0,0],['27+',0,0,0]]        
 initPG1 = pd.DataFrame(data,columns=['Edad',0,1,'2+'], dtype=int)
 initPG1 = initPG1.set_index('Edad')
-print(initPG1)
 
-data2 = [[25,0],[26,1],['27+',0]]
+data2 = [[25,10],[26,11],['27+',20]]
 initPG2 = pd.DataFrame(data2,columns=['Edad',0], dtype=int)
 initPG2 = initPG2.set_index('Edad')
-print(initPG2)        
+      
         
 #data3 = [[25,0.3,0.2,0.08],[26,0.15,0.14,0.13],['27+',0.21,0.19,0.18]]
 data3 = [[25,1,1,1],[26,1,1,1],['27+',1,1,0]]
 decTable = pd.DataFrame(data3,columns=['Edad',0,1,'2+'], dtype=float)
 decTable = decTable.set_index('Edad')
-print(decTable)     
 
-nsim = SimUL(decTable, initPG1, initPG2, 6, 1)
+
+nsim = SimUL(decTable, initPG1, initPG2, 20, 1)
 a,b,c = nsim.simulate()
 
 
+fig = plt.figure( 1 )
+ax = fig.add_subplot( 111 )
+
+im, cbar = heatmap(a[0][0].values, a[0][0].index,  a[0][0].columns, ax=ax, title="Pob Inicial",
+                   cmap="RdYlGn_r")
+texts = annotate_heatmap(im, valfmt="{x}")
+
+fig.show()
+im.axes.figure.canvas.draw()
+
+for i in range( 20 ):
+    ax.set_title( str( i + 1) )
+    im.set_data( a[0][i+1].values )
+    im.axes.figure.canvas.draw()
+    plt.pause(0.5)
+  
 
 
 
 
 
 
-        
+
+
+
+
+
+
+
+
+
+
+  
