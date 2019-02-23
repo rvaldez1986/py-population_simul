@@ -12,10 +12,7 @@ import numpy as np
 import pandas as pd
 
 
-class State:   
-    
-    totCost = 0
-    totPrem = 0    
+class State:     
     
     def __init__(self, Id_i = None, Id_j = None, next_i = None, next_j = None, g = None, name = None, nPop = 0, 
                           transMat = None, cost = None, prem = None):
@@ -29,6 +26,8 @@ class State:
         self.transMat = transMat
         self.cost = cost
         self.prem = prem
+        self.totCost = 0
+        self.totPrem = 0 
           
     def compute(self):
         self.totCost = self.cost * self.nPop 
