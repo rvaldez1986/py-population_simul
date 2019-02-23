@@ -6,7 +6,7 @@ Created on Tue Feb 19 12:49:32 2019
 """
 import os
 os.chdir('C:/Users/rober/Desktop/act-remote/proyecto-sim')
-from hmap import heatmap, annotate_heatmap
+from hmap import heatmap, annotate_heatmap, txt_remove
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -54,13 +54,7 @@ class State:
  
     
       
-class SimUL:
-    
-    stateDict = {}
-    transTable = {}
-    PopRes = []
-    IngRes = []
-    InactRes = [] 
+class SimUL: 
      
     
     def __init__(self, decTable, initPG1, initPG2, numStages, numSim):
@@ -69,6 +63,11 @@ class SimUL:
         self.initPG2 = initPG2
         self.numStages = numStages
         self.numSim = numSim
+        self.PopRes = []
+        self.IngRes = []
+        self.InactRes = []
+        self.stateDict = {}
+        self.transTable = {}
         
     def createStateDict(self):
         #define n*m + 1 states for g1 , intial population and (store them in a dictionary)
@@ -210,52 +209,62 @@ class SimUL:
             self.IngRes.append(currIng) 
             self.InactRes.append(currInact)        
                 
-        return(self.PopRes, self.IngRes, self.InactRes)    #PopRes dimension nsimul * nstages + 1 * n * m
-        
+        return(self.PopRes, self.IngRes, self.InactRes)    #PopRes dimension nsimul * nstages + 1 * n * m        
     
-    def plot(self, nsim):
+    def grid_plot(self, simNumb, speed=2):
         fig = plt.figure( 1 )
         ax = fig.add_subplot( 111 )
 
-        im, cbar = heatmap(self.PopRes[nsim - 1][0].values, self.PopRes[nsim - 1][0].index,  \
-                           self.PopRes[nsim - 1][0].columns, ax=ax, title="Pob Inicial", cmap="RdYlGn_r")
+        im, cbar = heatmap(self.PopRes[simNumb - 1][0].values, self.PopRes[simNumb - 1][0].index,  \
+                           self.PopRes[simNumb - 1][0].columns, ax=ax, title="Pop. at initial stage", cmap="RdYlGn_r")
         texts = annotate_heatmap(im, valfmt="{x}")
 
         fig.show()
         im.axes.figure.canvas.draw()
+        plt.pause(1/speed)
 
-        for i in range(len(self.PopRes[nsim - 1])-1):
-            ax.set_title( str( i + 1) )
-            im.set_data( self.PopRes[nsim - 1][i+1].values )
+        for i in range(len(self.PopRes[simNumb - 1])-1):
+            ax.set_title( 'Pop. at stage number: ' + str( i + 1) )
+            txt_remove(texts)
+            im.set_data( self.PopRes[simNumb - 1][i+1].values )
+            texts = annotate_heatmap(im, valfmt="{x}")
             im.axes.figure.canvas.draw()
-            plt.pause(0.5)
+            plt.pause(1/speed)
+            
+        plt.close()
         
-                
-                
-        
+      
    
-data = [[25,3,2,8],[26,15,14,13],['27+',21,19,18]]
-#data = [[25,0,0,0],[26,0,0,0],['27+',0,0,0]]        
+#data = [[25,3,2,8],[26,15,14,13],['27+',21,19,18]]
+data = [[25,10,0,0],[26,0,0,0],['27+',0,0,0]]        
 initPG1 = pd.DataFrame(data,columns=['Edad',0,1,'2+'], dtype=int)
 initPG1 = initPG1.set_index('Edad')
 
-data2 = [[25,10],[26,11],['27+',20]]
+data2 = [[25,0],[26,0],['27+',0]]
 initPG2 = pd.DataFrame(data2,columns=['Edad',0], dtype=int)
-initPG2 = initPG2.set_index('Edad')
-      
+initPG2 = initPG2.set_index('Edad')      
         
 #data3 = [[25,0.3,0.2,0.08],[26,0.15,0.14,0.13],['27+',0.21,0.19,0.18]]
 data3 = [[25,1,1,1],[26,1,1,1],['27+',1,1,0]]
 decTable = pd.DataFrame(data3,columns=['Edad',0,1,'2+'], dtype=float)
 decTable = decTable.set_index('Edad')
 
-
-nsim = SimUL(decTable, initPG1, initPG2, 20, 1)
+nsim = SimUL(decTable, initPG1, initPG2, 4, 1)
 a,b,c = nsim.simulate()
 
-nsim.plot(1)
+nsim.grid_plot(1, 2)
 
-len(a[0])  
+
+
+
+
+
+
+
+
+
+
+
 
 
 
