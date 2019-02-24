@@ -293,7 +293,7 @@ class SimUL:
     def age_plot(self, simNumb, speed):
         xlim = 0
         for i in range(len(self.FPG1_T[simNumb - 1])):
-            prob = max(max(pg1h[simNumb - 1][i].sum().values) , max(pg1m[simNumb - 1][i].sum().values))
+            prob = max(max(self.FPG1_H[simNumb - 1][i].sum().values) , max(self.FPG1_M[simNumb - 1][i].sum().values))
             xlim = max(prob, xlim)
         
         y1 = self.FPG1_H[simNumb - 1][0].sum().values
@@ -337,34 +337,7 @@ class SimUL:
         plt.close()
       
    
-data = [[25,10,0,0],[26,0,0,0],['27+',0,0,0]]        
-initPG1_H = pd.DataFrame(data,columns=['Edad',0,1,'2+'], dtype=int)
-initPG1_H = initPG1_H.set_index('Edad')
 
-data2 = [[25,10,0,0],[26,0,0,0],['27+',0,0,0]]        
-initPG1_M = pd.DataFrame(data2, columns=['Edad',0,1,'2+'], dtype=int)
-initPG1_M = initPG1_M.set_index('Edad')
-
-data3 = [[25,1],[26,1],['27+',0]]
-initPG2_H = pd.DataFrame(data3, columns=['Edad',0], dtype=int)
-initPG2_H = initPG2_H.set_index('Edad') 
-
-initPG2_M = initPG2_H.copy()
-
-data4 = [[25,1,1,1],[26,1,1,1],['27+',1,1,0]]
-decTable_H = pd.DataFrame(data4,columns=['Edad',0,1,'2+'], dtype=float)
-decTable_H = decTable_H.set_index('Edad')
-
-decTable_M = decTable_H.copy()
-
-
-
-nsim = SimUL(decTable_H, decTable_M, initPG1_H, initPG2_H, initPG1_M, initPG2_M)
-pg1T, pg2T, iact, pg1h, pg1m, pg2h, pg2m = nsim.simulate(1,4,1)
-
-nsim.grid_plot(1, 0.7)
-
-nsim.age_plot(1, 0.7)
 
 
 
