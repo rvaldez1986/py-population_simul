@@ -290,6 +290,51 @@ class SimUL:
             
         plt.close()
         
+    def age_plot(self, simNumb, speed):
+        xlim = 0
+        for i in range(len(self.FPG1_T[simNumb - 1])):
+            prob = max(max(pg1h[simNumb - 1][i].sum().values) , max(pg1m[simNumb - 1][i].sum().values))
+            xlim = max(prob, xlim)
+        
+        y1 = self.FPG1_H[simNumb - 1][0].sum().values
+        y2 = self.FPG1_M[simNumb - 1][0].sum().values
+        pos = range(len(y1))
+        x = self.FPG1_H[simNumb - 1][0].index
+
+        fig, axes = plt.subplots(ncols=2, sharey=True)
+        axes[0].barh(pos, y1, align='center', color='blue')
+        axes[0].set(title='Hombres')
+        axes[1].barh(pos, y2, align='center', color='red')
+        axes[1].set(title='Mujeres')
+        axes[0].invert_xaxis()
+        axes[0].set(yticks=pos, yticklabels=x)
+        axes[0].yaxis.tick_right()
+        axes[0].set_xlim(xlim+0.5, 0)
+        axes[1].set_xlim(0, xlim+0.5)
+        fig.suptitle("Pop. at initial stage")
+        plt.show()
+        plt.pause(1/speed)
+        
+        for i in range(len(self.FPG1_T[simNumb - 1])-1):
+            axes[0].clear()
+            axes[1].clear()
+
+            y1 = self.FPG1_H[simNumb - 1][i+1].sum().values
+            y2 = self.FPG1_M[simNumb - 1][i+1].sum().values
+
+            axes[0].barh(pos, y1, align='center', color='blue')
+            axes[0].set(title='Hombres')
+            axes[1].barh(pos, y2, align='center', color='red')
+            axes[1].set(title='Mujeres')
+            axes[0].invert_xaxis()
+            axes[0].set(yticks=pos, yticklabels=x)
+            axes[0].yaxis.tick_right()
+            axes[0].set_xlim(xlim+0.5, 0)
+            axes[1].set_xlim(0, xlim+0.5)
+            fig.suptitle('Pop. at stage number: ' + str( i + 1))
+            plt.pause(1/speed)
+        
+        plt.close()
       
    
 data = [[25,10,0,0],[26,0,0,0],['27+',0,0,0]]        
@@ -312,10 +357,16 @@ decTable_H = decTable_H.set_index('Edad')
 
 decTable_M = decTable_H.copy()
 
+
+
 nsim = SimUL(decTable_H, decTable_M, initPG1_H, initPG2_H, initPG1_M, initPG2_M)
-a,b,c,d,e,f,g = nsim.simulate(1,4,1)
+pg1T, pg2T, iact, pg1h, pg1m, pg2h, pg2m = nsim.simulate(1,4,1)
 
 nsim.grid_plot(1, 0.7)
+
+nsim.age_plot(1, 0.7)
+
+
 
 
 
