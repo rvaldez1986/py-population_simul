@@ -56,17 +56,16 @@ class State:
 class SimUL: 
      
     
-    def __init__(self, decTable, initPG1, initPG2, numStages, numSim):
+    def __init__(self, decTable, initPG1, initPG2, seed):
         self.decTable = decTable
         self.initPG1 = initPG1
         self.initPG2 = initPG2
-        self.numStages = numStages
-        self.numSim = numSim
         self.PopRes = []
         self.IngRes = []
         self.InactRes = []
         self.stateDict = {}
         self.transTable = {}
+        np.random.seed(seed)
         
     def createStateDict(self):
         #define n*m + 1 states for g1 , intial population and (store them in a dictionary)
@@ -176,12 +175,12 @@ class SimUL:
         return (PG1, PG2, inact)       
      
          
-    def simulate(self):                    
+    def simulate(self, numSim, numStages):                    
         
         self.createStateDict()
         self.asgnTrMat()     
         
-        for i in range(self.numSim):
+        for i in range(numSim):
             
             self.asgIniPop()
             
@@ -189,7 +188,7 @@ class SimUL:
             currIng = [self.initPG2]
             currInact = [self.stateDict['NA'].nPop]      
             
-            for j in range(self.numStages):                
+            for j in range(numStages):                
                                
                                 
                 #self.compute()  #we compute first, then transition
@@ -248,13 +247,10 @@ data3 = [[25,1,1,1],[26,1,1,1],['27+',1,1,0]]
 decTable = pd.DataFrame(data3,columns=['Edad',0,1,'2+'], dtype=float)
 decTable = decTable.set_index('Edad')
 
-nsim = SimUL(decTable, initPG1, initPG2, 4, 1)
-a,b,c = nsim.simulate()
+nsim = SimUL(decTable, initPG1, initPG2, 1)
+a,b,c = nsim.simulate(2,4)
 
-nsim.grid_plot(1, 2)
-
-
-
+nsim.grid_plot(1, 0.5)
 
 
 
