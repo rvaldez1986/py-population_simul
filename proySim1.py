@@ -56,7 +56,7 @@ class State:
 class SimUL: 
      
     
-    def __init__(self, decTable, initPG1, initPG2, seed):
+    def __init__(self, decTable, initPG1, initPG2):
         self.decTable = decTable
         self.initPG1 = initPG1
         self.initPG2 = initPG2
@@ -65,7 +65,7 @@ class SimUL:
         self.InactRes = []
         self.stateDict = {}
         self.transTable = {}
-        np.random.seed(seed)
+        
         
     def createStateDict(self):
         #define n*m + 1 states for g1 , intial population and (store them in a dictionary)
@@ -175,8 +175,9 @@ class SimUL:
         return (PG1, PG2, inact)       
      
          
-    def simulate(self, numSim, numStages):                    
+    def simulate(self, numSim, numStages, seed):                    
         
+        np.random.seed(seed)
         self.createStateDict()
         self.asgnTrMat()     
         
@@ -247,8 +248,8 @@ data3 = [[25,1,1,1],[26,1,1,1],['27+',1,1,0]]
 decTable = pd.DataFrame(data3,columns=['Edad',0,1,'2+'], dtype=float)
 decTable = decTable.set_index('Edad')
 
-nsim = SimUL(decTable, initPG1, initPG2, 1)
-a,b,c = nsim.simulate(2,4)
+nsim = SimUL(decTable, initPG1, initPG2)
+a,b,c = nsim.simulate(2,4,1)
 
 nsim.grid_plot(1, 0.5)
 
