@@ -297,8 +297,8 @@ class SimUL:
             prob = max(max(self.FPG1_H[simNumb - 1][i].sum().values) , max(self.FPG1_M[simNumb - 1][i].sum().values))
             xlim = max(prob, xlim)
         
-        y1 = self.FPG1_H[simNumb - 1][0].sum().values
-        y2 = self.FPG1_M[simNumb - 1][0].sum().values
+        y1 = self.FPG1_H[simNumb - 1][0].sum(axis=axis).values
+        y2 = self.FPG1_M[simNumb - 1][0].sum(axis=axis).values
         
         if axis == 0:
             name = 'ts '
@@ -306,8 +306,14 @@ class SimUL:
         else:
             name = 'age '
             x = self.FPG1_H[simNumb - 1][0].index
+            
+        title = "Pop. by " + name + "at initial stage"
         
-        fig, axes = a_plot(x,y1,y2,xlim,"Pop. by " + name + "at initial stage")
+        fig, axes = plt.subplots(ncols=2, sharey=True)
+        
+        fig, axes = a_plot(fig, axes, x,y1,y2,xlim,title)
+        
+        plt.show()
         
         plt.pause(1/speed)
         
@@ -315,11 +321,12 @@ class SimUL:
             axes[0].clear()
             axes[1].clear()
 
-            y1 = self.FPG1_H[simNumb - 1][i+1].sum().values
-            y2 = self.FPG1_M[simNumb - 1][i+1].sum().values
+            y1 = self.FPG1_H[simNumb - 1][i+1].sum(axis=axis).values
+            y2 = self.FPG1_M[simNumb - 1][i+1].sum(axis=axis).values
             
-            fig, axes = a_plot(x,y1,y2,xlim,"Pop. by " + name + "at stage number: " + str( i + 1))
-
+            title = "Pop. by " + name + "at stage number: " + str( i + 1)
+            
+            fig, axes = a_plot(fig, axes, x,y1,y2,xlim,title)
             
             plt.pause(1/speed)
         

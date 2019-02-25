@@ -56,9 +56,9 @@ nsim = SimUL(decTable_H, decTable_M, initPG1_H, initPG2_H, initPG1_M, initPG2_M)
 pg1T, pg2T, iact, pg1h, pg1m, pg2h, pg2m = nsim.simulate(1,4,1)
 
 nsim.grid_plot(1, 0.7)
-nsim.age_plot(1, 0.7)
+nsim.var_plot(1, 0, 0.7)
 
-
+pg1h[0][0].sum(axis=1)
 
 
 
