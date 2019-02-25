@@ -136,26 +136,24 @@ class SimUL:
                 if o.gen == 'H':
                     p1 = self.decTable_H.iloc[o.Id_i, o.Id_j]  #trans probability (HOMBRE)
                     p2 = 1 - p1                              #stay probability
-                    o.transMat = {(o.next_i, o.next_j, 1, 'H') : p1, "NA" : p2}
+                    o.transMat = {(o.next_i, o.next_j, 1, 'H') : p2, "NA" : p1}
                 else:
                     p1 = self.decTable_M.iloc[o.Id_i, o.Id_j]  #trans probability (MUJER)
                     p2 = 1 - p1                              #stay probability
-                    o.transMat = {(o.next_i, o.next_j, 1, 'M') : p1, "NA" : p2}                    
+                    o.transMat = {(o.next_i, o.next_j, 1, 'M') : p2, "NA" : p1}                    
                     
             elif o.g == 2:
-                p1 = 1   #transition is deterministic 
-                p2 = 0
+                p1 = 0   #transition is deterministic 
+                p2 = 1
                 if o.gen == 'H':
-                    o.transMat = {(o.Id_i, 0, 1, 'H') : p1, "NA" : p2}  #they go to actividad = 0
+                    o.transMat = {(o.Id_i, 0, 1, 'H') : p2, "NA" : p1}  #they go to actividad = 0
                 else:
-                    o.transMat = {(o.Id_i, 0, 1, 'M') : p1, "NA" : p2}  #they go to actividad = 0                
+                    o.transMat = {(o.Id_i, 0, 1, 'M') : p2, "NA" : p1}  #they go to actividad = 0                
             else:
                 o.transMat = {"NA" : 1}
                 
     
-    #def asgnOpm(self):
-    
-     
+    #def asgnOpm(self):     
     
     def send(self):
         for key in self.stateDict.keys():
@@ -239,8 +237,7 @@ class SimUL:
             currPG2_T = [self.initPG2_H + self.initPG2_M]
             currInact = [self.stateDict['NA'].nPop]
             currPG1_H = [self.initPG1_H] ; currPG2_H = [self.initPG2_H]
-            currPG1_M = [self.initPG1_M] ; currPG2_M = [self.initPG2_M]
-                 
+            currPG1_M = [self.initPG1_M] ; currPG2_M = [self.initPG2_M]                 
             
             for j in range(numStages):                
                                
