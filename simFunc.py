@@ -294,8 +294,8 @@ class SimUL:
     def var_plot(self, simNumb, axis, speed):
         xlim = 0
         for i in range(len(self.FPG1_T[simNumb - 1])):
-            prob = max(max(self.FPG1_H[simNumb - 1][i].sum().values) , max(self.FPG1_M[simNumb - 1][i].sum().values))
-            xlim = max(prob, xlim)
+            t = max(max(self.FPG1_H[simNumb - 1][i].sum(axis=axis).values) , max(self.FPG1_M[simNumb - 1][i].sum(axis=axis).values))
+            xlim = max(t, xlim)
         
         y1 = self.FPG1_H[simNumb - 1][0].sum(axis=axis).values
         y2 = self.FPG1_M[simNumb - 1][0].sum(axis=axis).values
