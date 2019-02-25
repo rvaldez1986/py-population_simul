@@ -6,7 +6,7 @@ Created on Tue Feb 19 12:49:32 2019
 """
 import os
 os.chdir('C:/Users/rober/Desktop/act-remote/proyecto-sim')
-from hmap import heatmap, annotate_heatmap, txt_remove
+from plotfun import heatmap
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -269,22 +269,23 @@ class SimUL:
                    self.FPG1_H, self.FPG1_M, self.FPG2_H, self.FPG2_M)    #FPG1 dimension nsimul * nstages + 1 * n * m        
     
     def grid_plot(self, simNumb, speed=2):
+        data = self.FPG1_T[simNumb - 1][0].values
+        col_values = self.FPG1_T[simNumb - 1][0].index
+        row_values = self.FPG1_T[simNumb - 1][0].columns
+        
         fig = plt.figure( 1 )
-        ax = fig.add_subplot( 111 )
-
-        im, cbar = heatmap(self.FPG1_T[simNumb - 1][0].values, self.FPG1_T[simNumb - 1][0].index,  \
-                           self.FPG1_T[simNumb - 1][0].columns, ax=ax, title="Pop. at initial stage", cmap="RdYlGn_r")
-        texts = annotate_heatmap(im, valfmt="{x}")
-
+        ax = fig.add_subplot( 111 )   
+        
+        im = heatmap(data, col_values,  \
+                           row_values, cmap="gist_yarg", ax=ax, title="Pop. at initial stage")
+        
         fig.show()
         im.axes.figure.canvas.draw()
         plt.pause(1/speed)
 
         for i in range(len(self.FPG1_T[simNumb - 1])-1):
-            ax.set_title( 'Pop. at stage number: ' + str( i + 1) )
-            txt_remove(texts)
+            ax.set_title( 'Pop. at stage number: ' + str( i + 1) )            
             im.set_data( self.FPG1_T[simNumb - 1][i+1].values )
-            texts = annotate_heatmap(im, valfmt="{x}")
             im.axes.figure.canvas.draw()
             plt.pause(1/speed)
             
