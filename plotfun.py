@@ -44,6 +44,28 @@ def heatmap(data, row_labels, col_labels, cmap, ax=None, title=None):
     return im
 
 
+def a_plot(x,y1,y2,xlim,title):
+    
+    pos = range(len(y1))
+    dif = 0.5
+    
+    fig, axes = plt.subplots(ncols=2, sharey=True)
+    axes[0].barh(pos, y1, align='center', color='blue')
+    axes[0].set(title='Hombres')
+    axes[1].barh(pos, y2, align='center', color='red')
+    axes[1].set(title='Mujeres')
+    axes[0].invert_xaxis()
+    axes[0].set(yticks=pos, yticklabels=x)
+    axes[0].yaxis.tick_right()
+    axes[0].set_xlim(xlim+dif, 0)
+    axes[1].set_xlim(0, xlim+dif)
+    fig.suptitle(title)
+    plt.show()
+    
+    return(fig, axes)
+    
+
+
 
 
 

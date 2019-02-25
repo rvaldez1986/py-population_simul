@@ -6,7 +6,7 @@ Created on Tue Feb 19 12:49:32 2019
 """
 import os
 os.chdir('C:/Users/rober/Desktop/act-remote/proyecto-sim')
-from plotfun import heatmap
+from plotfun import heatmap, a_plot
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -291,7 +291,7 @@ class SimUL:
             
         plt.close()
         
-    def age_plot(self, simNumb, speed):
+    def var_plot(self, simNumb, axis, speed):
         xlim = 0
         for i in range(len(self.FPG1_T[simNumb - 1])):
             prob = max(max(self.FPG1_H[simNumb - 1][i].sum().values) , max(self.FPG1_M[simNumb - 1][i].sum().values))
@@ -299,21 +299,16 @@ class SimUL:
         
         y1 = self.FPG1_H[simNumb - 1][0].sum().values
         y2 = self.FPG1_M[simNumb - 1][0].sum().values
-        pos = range(len(y1))
-        x = self.FPG1_H[simNumb - 1][0].index
-
-        fig, axes = plt.subplots(ncols=2, sharey=True)
-        axes[0].barh(pos, y1, align='center', color='blue')
-        axes[0].set(title='Hombres')
-        axes[1].barh(pos, y2, align='center', color='red')
-        axes[1].set(title='Mujeres')
-        axes[0].invert_xaxis()
-        axes[0].set(yticks=pos, yticklabels=x)
-        axes[0].yaxis.tick_right()
-        axes[0].set_xlim(xlim+0.5, 0)
-        axes[1].set_xlim(0, xlim+0.5)
-        fig.suptitle("Pop. at initial stage")
-        plt.show()
+        
+        if axis == 0:
+            name = 'ts '
+            x = self.FPG1_H[simNumb - 1][0].columns
+        else:
+            name = 'age '
+            x = self.FPG1_H[simNumb - 1][0].index
+        
+        fig, axes = a_plot(x,y1,y2,xlim,"Pop. by " + name + "at initial stage")
+        
         plt.pause(1/speed)
         
         for i in range(len(self.FPG1_T[simNumb - 1])-1):
@@ -322,17 +317,10 @@ class SimUL:
 
             y1 = self.FPG1_H[simNumb - 1][i+1].sum().values
             y2 = self.FPG1_M[simNumb - 1][i+1].sum().values
+            
+            fig, axes = a_plot(x,y1,y2,xlim,"Pop. by " + name + "at stage number: " + str( i + 1))
 
-            axes[0].barh(pos, y1, align='center', color='blue')
-            axes[0].set(title='Hombres')
-            axes[1].barh(pos, y2, align='center', color='red')
-            axes[1].set(title='Mujeres')
-            axes[0].invert_xaxis()
-            axes[0].set(yticks=pos, yticklabels=x)
-            axes[0].yaxis.tick_right()
-            axes[0].set_xlim(xlim+0.5, 0)
-            axes[1].set_xlim(0, xlim+0.5)
-            fig.suptitle('Pop. at stage number: ' + str( i + 1))
+            
             plt.pause(1/speed)
         
         plt.close()
