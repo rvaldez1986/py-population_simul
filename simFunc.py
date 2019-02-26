@@ -4,8 +4,6 @@ Created on Tue Feb 19 12:49:32 2019
 
 @author: rober
 """
-import os
-os.chdir('C:/Users/rober/Desktop/act-remote/proyecto-sim')
 from plotfun import heatmap, a_plot
 import matplotlib.pyplot as plt
 import numpy as np
@@ -231,6 +229,8 @@ class SimUL:
         
         for i in range(numSim):
             
+            print('iteration number {0} of {1}'.format(i+1,numSim))
+            
             self.asgIniPop()
             
             currPG1_T = [self.initPG1_H + self.initPG1_M]
@@ -239,8 +239,7 @@ class SimUL:
             currPG1_H = [self.initPG1_H] ; currPG2_H = [self.initPG2_H]
             currPG1_M = [self.initPG1_M] ; currPG2_M = [self.initPG2_M]                 
             
-            for j in range(numStages):                
-                               
+            for j in range(numStages):                           
                                 
                 #self.compute()  #we compute first, then transition
                 
@@ -260,7 +259,7 @@ class SimUL:
             self.FPG2_T.append(currPG2_T) 
             self.Finact.append(currInact) 
             self.FPG1_H.append(currPG1_H) ; self.FPG2_H.append(currPG2_H)
-            self.FPG1_M.append(currPG1_M) ; self.FPG2_M.append(currPG2_M)                      
+            self.FPG1_M.append(currPG1_M) ; self.FPG2_M.append(currPG2_M)                                  
                 
         return(self.FPG1_T, self.FPG2_T, self.Finact, \
                    self.FPG1_H, self.FPG1_M, self.FPG2_H, self.FPG2_M)    #FPG1 dimension nsimul * nstages + 1 * n * m        
