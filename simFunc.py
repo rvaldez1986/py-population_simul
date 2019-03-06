@@ -262,7 +262,53 @@ class SimUL:
             self.FPG1_M.append(currPG1_M) ; self.FPG2_M.append(currPG2_M)                                  
                 
         return(self.FPG1_T, self.FPG2_T, self.Finact, \
-                   self.FPG1_H, self.FPG1_M, self.FPG2_H, self.FPG2_M)    #FPG1 dimension nsimul * nstages + 1 * n * m        
+                   self.FPG1_H, self.FPG1_M, self.FPG2_H, self.FPG2_M)    #FPG1 dimension nsimul * nstages + 1 * n * m  
+       
+    
+    def yieldCost(self, PremTable, CostTable, popSim):
+        #popSim is the population for all stages at the nth simulation        
+        for pop in popSim:
+            c = (pop.values * CostTable.values).sum()
+            p = (pop.values * PremTable.values).sum()
+            
+            yield c, p
+            
+    def storeCost(self, PremTableH, CostTableH, PremTableM, CostTableM, iCosto, iPrima, iInteres):
+        
+        CostH = []
+        PremH = []
+        CostM = []
+        PremM = [] 
+        
+        CostTot = []
+        PremTot = []
+        
+        for simH, simM in zip(self.FPG1_H, self.FPG1_M):
+            
+            CostHsim = 0; PremHsim = 0; CostMsim = 0; PremMsim = 0
+            
+            t = 0.5
+            for c,p in self.yieldCost(PremTableH, CostTableH, simH):
+                CostHsim += c*((1+iCosto)/(1+iPrima))**(t)
+                PremHsim += p*((1+iCosto)/(1+iPrima))**(t)
+                t += 1
+            
+            t = 0.5
+            for c,p in self.yieldCost(PremTableM, CostTableM, simM):
+                CostMsim += c*((1+iCosto)/(1+iPrima))**(t)
+                PremMsim += p*((1+iCosto)/(1+iPrima))**(t)
+                t += 1
+                
+            CostH.append(CostHsim)
+            PremH.append(PremHsim)
+            CostM.append(CostMsim)
+            PremM.append(PremMsim)
+            
+            CostTot.append(CostHsim + CostMsim)
+            PremTot.append(PremHsim + PremMsim)
+        
+        return (CostTot, PremTot, CostH, PremH, CostM, PremM)   
+    
     
     def grid_plot(self, simNumb, speed=2):
         data = self.FPG1_T[simNumb - 1][0].values
