@@ -53,11 +53,22 @@ decTable_M = decTable_M.set_index('Edad\TS')
 
 nsim = SimUL(decTable_H, decTable_M, initPG1_H, initPG2_H, initPG1_M, initPG2_M)
 
-pg1T, pg2T, iact, pg1h, pg1m, pg2h, pg2m = nsim.simulate(1,30,1)
+pg1T, pg2T, iact, pg1h, pg1m, pg2h, pg2m = nsim.simulate(3,30,1)
 
 nsim.grid_plot(1, 2)
 nsim.var_plot(1, 0, 0.9)
 
+PremTableH = workbook['PremTableH'] 
+PremTableH = PremTableH.set_index('Edad\TS')
+CostTableH = workbook['CostTableH'] 
+CostTableH = CostTableH.set_index('Edad\TS')
+
+PremTableM = workbook['PremTableM'] 
+PremTableM = PremTableM.set_index('Edad\TS')
+CostTableM = workbook['CostTableM'] 
+CostTableM = CostTableM.set_index('Edad\TS')
+
+res = nsim.compCosts(PremTableH, CostTableH, PremTableM, CostTableM, 0.03, 0.03, 0.07)
 
 
 
