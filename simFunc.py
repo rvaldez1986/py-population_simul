@@ -273,7 +273,7 @@ class SimUL:
             
             yield c, p
             
-    def storeCost(self, PremTableH, CostTableH, PremTableM, CostTableM, iCosto, iPrima, iInteres):
+    def compCosts(self, PremTableH, CostTableH, PremTableM, CostTableM, iCosto, iPrima, iInteres):
         
         CostH = []
         PremH = []
@@ -282,6 +282,7 @@ class SimUL:
         
         CostTot = []
         PremTot = []
+        TotDif = []
         
         for simH, simM in zip(self.FPG1_H, self.FPG1_M):
             
@@ -306,8 +307,9 @@ class SimUL:
             
             CostTot.append(CostHsim + CostMsim)
             PremTot.append(PremHsim + PremMsim)
+            TotDif.append(PremHsim + PremMsim - CostHsim - CostMsim)
         
-        return (CostTot, PremTot, CostH, PremH, CostM, PremM)   
+        return (TotDif, CostTot, PremTot, CostH, PremH, CostM, PremM)   
     
     
     def grid_plot(self, simNumb, speed=2):

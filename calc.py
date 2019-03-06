@@ -69,7 +69,7 @@ CostTableM = workbook['CostTableM']
 CostTableM = CostTableM.set_index('Edad\TS')
 
 res = nsim.compCosts(PremTableH, CostTableH, PremTableM, CostTableM, 0.03, 0.03, 0.07)
-
+res[0]
 
 
 
