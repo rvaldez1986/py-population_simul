@@ -112,14 +112,14 @@ class SimUL:
             o = self.stateDict[key]
             if o.g == 1:
                 if o.gen == 'H':
-                    o.nPop = self.initPG1_H.iloc[o.Id_i,o.Id_j]
+                    o.nPop = int(self.initPG1_H.iloc[o.Id_i,o.Id_j])
                 else:
-                    o.nPop = self.initPG1_M.iloc[o.Id_i,o.Id_j]                
+                    o.nPop = int(self.initPG1_M.iloc[o.Id_i,o.Id_j])                
             elif o.g == 2:
                 if o.gen == 'H':
-                    o.nPop = self.initPG2_H.iloc[o.Id_i]
+                    o.nPop = int(self.initPG2_H.iloc[o.Id_i])
                 else:
-                    o.nPop = self.initPG2_M.iloc[o.Id_i]                
+                    o.nPop = int(self.initPG2_M.iloc[o.Id_i])                
             else:
                 o.nPop = 0 
     

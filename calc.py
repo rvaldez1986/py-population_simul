@@ -53,7 +53,15 @@ decTable_M = decTable_M.set_index('Edad\TS')
 
 nsim = SimUL(decTable_H, decTable_M, initPG1_H, initPG2_H, initPG1_M, initPG2_M)
 
-pg1T, pg2T, iact, pg1h, pg1m, pg2h, pg2m = nsim.simulate(3,30,1)
+import time 
+print ("Start Execution : ",end="") 
+print (time.ctime()) 
+pg1T, pg2T, iact, pg1h, pg1m, pg2h, pg2m = nsim.simulate(60,30,1)
+print ("Stop Execution : ",end="") 
+print (time.ctime()) 
+
+#master method takes 21:46:50 21:49:07, 2 min, 17 seconds
+
 
 nsim.grid_plot(1, 2)
 nsim.var_plot(1, 1, 0.9)
