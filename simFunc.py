@@ -154,7 +154,9 @@ class SimUL:
     #def asgnOpm(self):     
     
     def send(self):
-        for key in self.stateDict.keys():
+        #filter
+        nklist = [k for k in self.stateDict.keys() if self.stateDict[k].nPop > 0]
+        for key in nklist:
             o = self.stateDict[key]
             o.send(self.transTable)
     
@@ -177,8 +179,8 @@ class SimUL:
         mat2_Tot = np.zeros([n,1])
         
         inact = 0
-        
-        for key in self.stateDict.keys():
+        nklist = [k for k in self.stateDict.keys() if self.stateDict[k].nPop > 0]
+        for key in nklist:
             o = self.stateDict[key]
             if o.g == 1:
                 if o.gen == 'H':
