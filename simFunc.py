@@ -154,14 +154,15 @@ class SimUL:
     #def asgnOpm(self):     
     
     def send(self):
-        #filter
+        #filter states that do not have population, no population can be sent
         nklist = [k for k in self.stateDict.keys() if self.stateDict[k].nPop > 0]
         for key in nklist:
             o = self.stateDict[key]
             o.send(self.transTable)
     
     def receive(self):
-        for key in self.stateDict.keys():
+        nklist = [k for k in self.stateDict.keys() if k in self.transTable.keys()]
+        for key in nklist:
             o = self.stateDict[key]
             o.receive(self.transTable)         
 
@@ -179,7 +180,7 @@ class SimUL:
         mat2_Tot = np.zeros([n,1])
         
         inact = 0
-        nklist = [k for k in self.stateDict.keys() if self.stateDict[k].nPop > 0]
+        nklist = [k for k in self.stateDict.keys() if self.stateDict[k].nPop > 0]  #filter, assign pop to population that only have people
         for key in nklist:
             o = self.stateDict[key]
             if o.g == 1:
