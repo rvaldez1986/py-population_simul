@@ -293,8 +293,8 @@ class SimUL:
             
             t = 0.5
             for c,p in self.yieldCost(PremTableH, CostTableH, simH):
-                CostHsim += c*((1+iCosto)/(1+iPrima))**(t)
-                PremHsim += p*((1+iCosto)/(1+iPrima))**(t)
+                CostHsim += c*((1+iCosto)/(1+iInteres))**(t)
+                PremHsim += p*((1+iPrima)/(1+iInteres))**(t)
                 t += 1
             
             t = 0.5
