@@ -54,6 +54,24 @@ res[0]
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+#import os
+#os.chdir('C:/Users/rober/Desktop/act-remote/proyecto-sim')
+#import pandas as pd
+#from simFunc import SimUL
+#
 #data = [[25,10,0,0],[26,0,0,0],['27+',0,0,0]]        
 #initPG1_H = pd.DataFrame(data,columns=['Edad',0,1,'2+'], dtype=int)
 #initPG1_H = initPG1_H.set_index('Edad')
@@ -80,10 +98,11 @@ res[0]
 #CostTableM = initPG1_M.copy()
 #
 #CostTableH[0][0] = 10
+#CostTableH[1][1] = 10
 #
 #nsim = SimUL(decTable_H, decTable_M, initPG1_H, initPG2_H, initPG1_M, initPG2_M)
 #
 #pg1T, pg2T, iact, pg1h, pg1m, pg2h, pg2m = nsim.simulate(2,4,1)
 #
-#res = nsim.compCosts(PremTableH, CostTableH, PremTableM, CostTableM, 0.10, 0.10, 0.10)
+#res = nsim.compCosts(PremTableH, CostTableH, PremTableM, CostTableM, 0.03, 0.00, 0.10)
 #res[0]
