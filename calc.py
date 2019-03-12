@@ -29,7 +29,7 @@ decTable_M = decTable_M.set_index('Edad\TS')
 
 nsim = SimUL(decTable_H, decTable_M, initPG1_H, initPG2_H, initPG1_M, initPG2_M)
 
-pg1T, pg2T, iact, pg1h, pg1m, pg2h, pg2m = nsim.simulate(50,30,1)
+pg1T, pg2T, iact, pg1h, pg1m, pg2h, pg2m = nsim.simulate(10,30,1)
 
 
 nsim.grid_plot(1, 2)
@@ -46,12 +46,19 @@ PremTableM = PremTableM.set_index('Edad\TS')
 CostTableM = workbook['CostTableM'] 
 CostTableM = CostTableM.set_index('Edad\TS')
 
+def estabilize_prem(edad, df):
+    #edad puede ser un numero o un caracter ex: '100+'
+    ep = df.index.get_loc(edad)
+    df2 = df.copy()
+    df2.iloc[ep+1:,:] = list(df2.iloc[ep,:])
+    return df2
+    
+PremTableM2 = estabilize_prem(25, PremTableM)
+#PremTableM2 es una tabla de primas con la prima estabilizada desde en este caso 25 anios
+
 #Parametros tabla primas hombres, tabla costos hombres, "" mujeres, tasa incremento en costos, tasa inc primas, tasa interes
 res = nsim.compCosts(PremTableH, CostTableH, PremTableM, CostTableM, 0.03, 0.03, 0.07)
 res[0]
-
-
-
 
 
 
