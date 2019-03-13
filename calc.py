@@ -60,8 +60,10 @@ PremTableM2 = estabilize_prem(25, PremTableM)
 res = nsim.compCosts(PremTableH, CostTableH, PremTableM, CostTableM, 0.03, 0.03, 0.07)
 res[0]
 
-
-
+#compCosts2 no entrega la suma sino el costo en valor presente de cada simulacion
+#Parametros tabla primas hombres, tabla costos hombres, "" mujeres, tasa incremento en costos, tasa inc primas, tasa interes
+res2 = nsim.compCosts2(PremTableH, CostTableH, PremTableM, CostTableM, 0.03, 0.03, 0.07)
+res2[0]
 
 
 
