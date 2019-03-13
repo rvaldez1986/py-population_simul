@@ -314,6 +314,43 @@ class SimUL:
         
         return (TotDif, CostTot, PremTot, CostH, PremH, CostM, PremM)   
     
+    def compCosts2(self, PremTableH, CostTableH, PremTableM, CostTableM, iCosto, iPrima, iInteres):
+        
+        CostH = []
+        PremH = []
+        CostM = []
+        PremM = [] 
+        
+        CostTot = []
+        PremTot = []
+        TotDif = []
+        
+        for simH, simM in zip(self.FPG1_H, self.FPG1_M):
+            
+            CostHsim = np.array([]); PremHsim = np.array([]); CostMsim = np.array([]); PremMsim = np.array([])
+            
+            t = 0.5
+            for c,p in self.yieldCost(PremTableH, CostTableH, simH):
+                CostHsim = np.append(CostHsim, c*((1+iCosto)/(1+iInteres))**(t))
+                PremHsim = np.append(PremHsim, p*((1+iPrima)/(1+iInteres))**(t))
+                t += 1
+            
+            t = 0.5
+            for c,p in self.yieldCost(PremTableM, CostTableM, simM):
+                CostMsim = np.append(CostMsim, c*((1+iCosto)/(1+iInteres))**(t))
+                PremMsim = np.append(PremMsim, p*((1+iPrima)/(1+iInteres))**(t))
+                t += 1
+                
+            CostH.append(CostHsim)
+            PremH.append(PremHsim)
+            CostM.append(CostMsim)
+            PremM.append(PremMsim)
+            
+            CostTot.append(CostHsim + CostMsim)
+            PremTot.append(PremHsim + PremMsim)
+            TotDif.append(PremHsim + PremMsim - CostHsim - CostMsim)
+        
+        return (TotDif, CostTot, PremTot, CostH, PremH, CostM, PremM)  
     
     def grid_plot(self, simNumb, speed=2):
         data = self.FPG1_T[simNumb - 1][0].values
