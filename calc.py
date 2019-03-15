@@ -35,8 +35,9 @@ pg1T, pg2T, iact, pg1h, pg1m, pg2h, pg2m = nsim.simulate(10,30,1)
 nsim.grid_plot(1, 2)
 nsim.var_plot(1, 1, 0.9)
 
-#con este comando se le da en numero de la simulacion que queremos y nos devuelve un grafico de como cambia la edad promedio
-nsim.age_evol_plot(2)
+#con este comando se le da en numero de la simulacion que queremos y nos devuelve un grafico de como va cambiando
+# la edad promedio en cada etapa
+nsim.age_evol_plot(1)
 
 #Para calcular los costos cargamos las tablas:
 PremTableH = workbook['PremTableH'] 
