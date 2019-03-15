@@ -5,7 +5,7 @@ Created on Sun Feb 24 03:29:58 2019
 @author: rober
 """
 import os
-os.chdir('C:/Users/rober/Desktop/act-remote/proyecto-sim')
+os.chdir('C:/Users/rober/Desktop/act-remote/proyecto-sim/programa')
 import pandas as pd
 from simFunc import SimUL
 
@@ -34,6 +34,9 @@ pg1T, pg2T, iact, pg1h, pg1m, pg2h, pg2m = nsim.simulate(10,30,1)
 
 nsim.grid_plot(1, 2)
 nsim.var_plot(1, 1, 0.9)
+
+#con este comando se le da en numero de la simulacion que queremos y nos devuelve un grafico de como cambia la edad promedio
+nsim.age_evol_plot(2)
 
 #Para calcular los costos cargamos las tablas:
 PremTableH = workbook['PremTableH'] 

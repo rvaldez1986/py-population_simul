@@ -417,7 +417,30 @@ class SimUL:
         plt.close()
       
    
+    def age_evol_plot(self, simNumb):
+        
+        simNumb = 1
+        tot_age = []
+        stages = list(range(len(self.FPG1_T[simNumb - 1])))
 
+        for i in stages:
+            series = self.FPG1_T[simNumb - 1][i].sum(axis = 1)
+            ages = np.append(np.array(series.index[:-1], dtype=int), int(series.index[-1].replace('+', '')))
+            values = np.array(series.values, dtype = int)
+            mean_age = round(sum((ages * values))/sum(values), 2)
+            tot_age.append(mean_age)
+
+
+        plt.style.use('seaborn-whitegrid')
+
+        fig = plt.figure()
+        ax = plt.axes()
+
+        plt.title("Evolución de la Edad Promedio")
+        plt.xlabel("Etapa")
+        plt.ylabel("Edad Promedio")
+
+        ax.plot(stages, tot_age, color='blue')
 
 
 
