@@ -421,6 +421,7 @@ class SimUL:
         
         simNumb = 1
         tot_age = []
+        oo_age = []
         stages = list(range(len(self.FPG1_T[simNumb - 1])))
 
         for i in stages:
@@ -429,6 +430,10 @@ class SimUL:
             values = np.array(series.values, dtype = int)
             mean_age = round(sum((ages * values))/sum(values), 2)
             tot_age.append(mean_age)
+            if i == 0:
+                oo_age.append(mean_age)
+            else:
+                oo_age.append(oo_age[-1] + 1)
 
 
         plt.style.use('seaborn-whitegrid')
@@ -441,6 +446,7 @@ class SimUL:
         plt.ylabel("Edad Promedio")
 
         ax.plot(stages, tot_age, color='blue')
+        ax.plot(stages, oo_age, color='blue', linestyle='--')
 
 
 
