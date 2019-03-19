@@ -446,7 +446,7 @@ class SimUL:
         plt.ylabel("Edad Promedio")
 
         ax.plot(stages, tot_age, color='blue')
-        ax.plot(stages, oo_age, color='blue', linestyle='--')
+        ax.plot(stages, oo_age, color='black', linestyle='--')
 
 
 
